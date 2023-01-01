@@ -2,8 +2,8 @@ name: DockerPushWorkflow
 
 on:
   push:
-    # tags: 
-    #   - "*"
+    tags:
+      - "*"
 
 env:
   IMAGE: bozdoz/docker-push
@@ -21,4 +21,5 @@ jobs:
       - run: |
           docker build -t img .
           docker tag img ${IMAGE}:latest
-          docker push ${IMAGE}:latest
+          docker tag img ${IMAGE}:${{ github.ref_name }}
+          # docker push ${IMAGE}:latest
