@@ -20,8 +20,21 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - run: |
           docker build -t img .
+
+          # ex: v1.2.3-very-good-tag
           TAG="${{ github.ref_name }}"
+          # ex: 1.2.3-very-good-tag
+          VER=$(echo $TAG | sed "s/^v//g")
+          # ex: 1.2.3
+          NUM=$(echo $VER | sed "s/\-.*//g")
+
           docker tag img ${IMAGE}:latest
-          docker tag img ${IMAGE}:${TAG}
+          docker tag img ${IMAGE}:${NUM}
           docker push ${IMAGE}:latest
-          docker push ${IMAGE}:${TAG}
+          docker push ${IMAGE}:${NUM}
+
+          if ["$VER" != "$NUM"]; then
+            # publish the full Version if it's not just a number
+            docker tag img ${IMAGE}:${VER}
+            docker push ${IMAGE}:${VER}
+          fi
