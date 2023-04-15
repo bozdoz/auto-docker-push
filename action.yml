@@ -1,0 +1,44 @@
+# action.yml
+name: 'Docker Push'
+description: 'Push a docker image to docker hub after new tag pushed'
+inputs:
+  image:
+    description: 'Name of image'
+    required: true
+  username:
+    description: Docker Hub username'
+    required: true
+  password:
+    description: Docker Hub password'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - if: startsWith(github.ref, 'refs/tags/')
+      name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+    - if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+          docker build -t img .
+
+          # ex: v1.2.3-very-good-tag
+          TAG="${{ github.ref_name }}"
+          # ex: 1.2.3-very-good-tag
+          VER=$(echo $TAG | sed "s/^v//g")
+          # ex: 1.2.3
+          NUM=$(echo $VER | sed "s/\-.*//g")
+
+          docker tag img ${{ inputs.image }}:latest
+          docker tag img ${{ inputs.image }}:${NUM}
+          docker push ${{ inputs.image }}:latest
+          docker push ${{ inputs.image }}:${NUM}
+
+          if [ "$VER" != "$NUM" ]; then
+            # publish the full Version if it's not just a number
+            docker tag img ${{ inputs.image }}:${VER}
+            docker push ${IMAGE}:${VER}
+          fi
