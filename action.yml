@@ -1,6 +1,9 @@
 # action.yml
 name: 'Auto Docker Push'
 description: 'Push a docker image to docker hub with tags derived from newly pushed tags'
+branding:
+  color: blue
+  icon: upload-cloud
 inputs:
   image:
     description: 'Name of image'
