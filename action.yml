@@ -1,6 +1,6 @@
 # action.yml
-name: 'Docker Push'
-description: 'Push a docker image to docker hub after new tag pushed'
+name: 'Auto Docker Push'
+description: 'Push a docker image to docker hub with tags derived from newly pushed tags'
 inputs:
   image:
     description: 'Name of image'
