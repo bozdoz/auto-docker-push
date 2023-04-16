@@ -21,8 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Docker Push
-        uses: bozdoz/auto-docker-push
+      - uses: bozdoz/auto-docker-push@v2
         with:
           image: ${{ secrets.DOCKER_HUB_IMAGE }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
