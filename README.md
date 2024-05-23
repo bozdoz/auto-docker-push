@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Docker Push
-        uses: bozdoz/auto-docker-push
+        uses: bozdoz/auto-docker-push@v3
         with:
           image: ${{ secrets.DOCKER_HUB_IMAGE }}
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
