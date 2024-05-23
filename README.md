@@ -20,7 +20,7 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Docker Push
         uses: bozdoz/auto-docker-push
         with:
